@@ -16,7 +16,6 @@ Group: System/Kernel and hardware
 URL: http://www.avm.de/
 Requires(post): dkms
 Requires(preun): dkms
-BuildRoot: %{_tmppath}/%{name}-buildroot
 BuildArch: noarch
 
 %description
