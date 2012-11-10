@@ -1,0 +1,6 @@
+dkms-fxusb_CZ-remove-DECLARE_MUTEX_LOCKED.patch
+dkms-fxusb_CZ-remove-usb_driver_owner.patch
+dkms-fxusb_CZ-update-INIT_WORK-changes.patch
+dkms-fxusb_CZ-update-usb_complete_t-functions.patch
+dkms-fxusb_CZ-use-autoconf-header.patch
+fxusb-suse93-3.11-06.tar.bz2

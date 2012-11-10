@@ -1,0 +1,93 @@
+--- fritz.xusb_CZ/README.fxusb_CZ.orig       Thu Jan  1 01:00:00 1970
++++ fritz.xusb_CZ/README.fxusb_CZ        Fri Aug 30 17:33:17 2002
+@@ -0,0 +1,41 @@
++Driver for the Fritz!X USB devices sold in Czech Republic
++=========================================================
++Michal Svec <msvec@suse.cz>
++
++Situation:
++----------
++Czech Telecom licensed the device from AVM GmbH, Germany.
++They didn't pay for the Linux support and thus the original
++drivers from AVM don't contain support for this device.
++
++Only a minor changes were needed to enable support of this
++device in the original drivers. However the AVM provides
++support for their drivers only if they are distributed in
++an unmodified form.
++
++Solution:
++---------
++I created a modified fxusb_CZ.o driver, based on the AVM
++original fxusb.o with a support for the czech devices. It
++should support all of the original Fritz!X USB devices as
++well, but it's not covered by the AVM support.
++
++Disclaimers:
++------------
++Despite the fact this is based on the AVM work, AVM GmbH
++doesn't have anything to do with this so don't contact them.
++
++AVM GmbH will NOT provide any support for this patched driver.
++
++Here is no warranty that this will work with all devices
++or with future versions.
++
++WARNING: It may damage the device, use on own risk.
++
++License:
++--------
++The binary only part is under a special license from AVM,
++see license.bin for details.
++
++My changes and the other open source parts of the driver are
++distributed under the GNU Lesser General Public License (LGPL).
+diff -ur fritz.xusb/src/Makefile fritz.xusb_CZ/src/Makefile
+--- fritz.xusb/src/Makefile	2005-07-07 00:00:00.000000000 +0200
++++ fritz.xusb_CZ/src/Makefile	2005-07-25 23:40:23.355365630 +0200
+@@ -1,6 +1,6 @@
+ # COMMON
+ 
+-CARD		:= fxusb
++CARD		:= fxusb_CZ
+ LIBDIR		:= /var/lib/fritz
+ OBJECTS		:= main.o driver.o tools.o tables.o queue.o lib.o
+ 
+diff -ur fritz.xusb/src/defs.h fritz.xusb_CZ/src/defs.h
+--- fritz.xusb/src/defs.h	2005-07-07 00:00:00.000000000 +0200
++++ fritz.xusb_CZ/src/defs.h	2005-07-25 23:44:49.649849178 +0200
+@@ -43,6 +43,9 @@
+ #elif defined (__fxusb__)
+ # define PRODUCT_LOGO		"AVM FRITZ!X USB/FRITZ!X ISDN"
+ # define PRODUCT_TYPE		1
++#elif defined (__fxusb_CZ__)
++# define PRODUCT_LOGO		"OEM FRITZ!X USB"
++# define PRODUCT_TYPE		1
+ #elif defined (__teumex2k__)
+ # define PRODUCT_LOGO		"T-Eumex 2000PC SE"
+ # define PRODUCT_TYPE		2
+diff -ur fritz.xusb/src/main.c fritz.xusb_CZ/src/main.c
+--- fritz.xusb/src/main.c	2005-07-07 00:00:00.000000000 +0200
++++ fritz.xusb_CZ/src/main.c	2005-07-25 23:48:19.417206551 +0200
+@@ -17,7 +17,11 @@
+  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA, or see
+  * http://www.opensource.org/licenses/lgpl-license.html
+  * 
+- * Contact: AVM GmbH, Alt-Moabit 95, 10559 Berlin, Germany, email: info@avm.de
++ *
++ * Patched for the OEM Fritz!X USB devices sold in Czech Republic or as TELEDAT 120
++ * (id 0x2800) Michal Svec <msvec@suse.cz>
++ * Please Note that AVM don't support this driver modification.
++ *
+  */
+ 
+ #include <linux/kernel.h>
+@@ -45,6 +49,8 @@
+ #define	PRODUCT_ID2		0x1900
+ #elif defined (__fxusb__)
+ #define	PRODUCT_ID		0x2000
++#elif defined (__fxusb_CZ__)
++#define	PRODUCT_ID		0x2800
+ #elif defined (__teumex2k__)
+ #define	PRODUCT_ID		0x2801
+ #elif defined (__teumex4k__)
