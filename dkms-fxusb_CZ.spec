@@ -18,7 +18,7 @@ Patch0: fritz-xchg.patch
 Patch1: %{module}.patch
 License: Commercial
 Group: System/Kernel and hardware
-URL: http://www.avm.de/
+URL: https://www.avm.de/
 Requires(post): dkms
 Requires(preun): dkms
 BuildRoot: %{_tmppath}/%{name}-buildroot
